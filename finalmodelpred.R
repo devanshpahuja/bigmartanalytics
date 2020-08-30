@@ -50,7 +50,7 @@ train$Item_Visibility[train$Item_Visibility == 0] <-
 set.seed(100) # Generate random numbers.
 train$Outlet_Size <- as.character(train$Outlet_Size)
 Storetypes <- subset(train, Outlet_Size != "")
-spl <- sample.split(Storetypes$Outlet_Size, SplitRatio = 0.8283468)
+spl <- sample.split(Storetypes$Outlet_Size, SplitRatio = 0.89)
 train_outlet <- subset(Storetypes, spl == TRUE)
 test_outlet <- subset(Storetypes, spl == FALSE)
 #now we will use our random forest library for classification
@@ -94,7 +94,7 @@ test$Item_Visibility[test$Item_Visibility == 0] <-
 set.seed(100)
 test$Outlet_Size <- as.character(test$Outlet_Size)
 Storetypes <- subset(test, Outlet_Size != "")
-spl <- sample.split(Storetypes$Outlet_Size, SplitRatio = 0.8283468)
+spl <- sample.split(Storetypes$Outlet_Size, SplitRatio = 0.7281)
 test_outlet <- subset(Storetypes, spl == TRUE)
 test_outlet <- subset(Storetypes, spl == FALSE)
 test_outlet$Outlet_Size <- as.factor(test_outlet$Outlet_Size)
@@ -119,4 +119,6 @@ testPrediction$Item_Outlet_Sales <- as.vector(sales)
 names(testPrediction)[12] <- "Item_Outlet_Sales"
 
 answer = testPrediction[, c("Item_Identifier", "Outlet_Identifier", "Item_Outlet_Sales")]
-write.csv(answer, "result.csv")
+answer$Item_Outlet_Sales<- abs(answer$Item_Outlet_Sales)
+write.csv(answer, "result.csv",row.names =FALSE)
+
